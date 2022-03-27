@@ -6,6 +6,7 @@ const Login = () => {
   const [number, setNumber] = useState("");
   const [valid, setValid] = useState(true);
   const [otpSuccess, setOtpSuccess] = useState(false);
+  const [wrongOtp, setWrongOtp] = useState(false);
   const [otpRequested, setOtpRequested] = useState(false);
   const [userid, setUserid] = useState("");
   const [otp, setOtp] = useState("");
@@ -24,7 +25,6 @@ const Login = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setOtpRequested(true);
       });
   };
@@ -44,9 +44,8 @@ const Login = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Verify OTP Data:");
-        console.log(data);
         setOtpSuccess(data.isValidOtp);
+        setWrongOtp(!data.isValidOtp);
       });
   };
 
@@ -121,6 +120,14 @@ const Login = () => {
                 className="btn btn-primary"
               />
             </div>
+            {wrongOtp && (
+              <div className="text-center">
+                <p className="text-danger">OTP does not match! Try Again.</p>
+                <a href="/" className="text-center">
+                  Or Request Another
+                </a>
+              </div>
+            )}
           </form>
         )}
         {otpSuccess && (
